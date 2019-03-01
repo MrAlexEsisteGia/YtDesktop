@@ -10,7 +10,7 @@ and "start.bat" to open electron
 ```
 Users:               
 ```
-Go to releases and download the .zip for your platform          
+Go to releases and download "YtDesktop-win32-x64.zip"         
 Unzip it, and open "YtDesktop.exe"                   
 ```
 Linux:          
