@@ -9,7 +9,7 @@ function createWindow () {
     }
   })
   mainWindow.setMenuBarVisibility(false)
-  mainWindow.loadFile('index.html')
+  mainWindow.loadURL('https://music.youtube.com/')
   mainWindow.on('closed', function () {
     mainWindow = null
   })
