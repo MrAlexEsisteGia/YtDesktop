@@ -1,5 +1,4 @@
 
-WIP for now
 
 Windows:           
 ----------------------          
