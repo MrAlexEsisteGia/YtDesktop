@@ -15,7 +15,7 @@ function createWindow () {
   
   let tray = null
 app.on('ready', () => {
-  tray = new Tray('icon.ico')
+  tray = new Tray('icon.png')
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Youtube Music', type: 'radio', checked: true },
   ])

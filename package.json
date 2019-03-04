@@ -14,5 +14,6 @@
   "license": "",
   "devDependencies": {
     "electron": "^4.0.6"
-  }
+  },
+  "dependencies": {}
 }
