@@ -1,4 +1,5 @@
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/MrAlexEsisteGia/YtDesktop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MrAlexEsisteGia/YtDesktop/alerts/)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/MrAlexEsisteGia/YtDesktop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MrAlexEsisteGia/YtDesktop/alerts/) 
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/MrAlexEsisteGia/YtDesktop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MrAlexEsisteGia/YtDesktop/context:javascript)  
 
 Windows:           
 ----------------------          
