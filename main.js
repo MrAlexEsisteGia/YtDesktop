@@ -4,7 +4,7 @@ var path = require('path')
 let mainWindow
 function createWindow () {
   mainWindow = new BrowserWindow({
-	icon: path.join(__dirname, 'assets/icons/png/512x512.png'),
+	icon: path.join(__dirname, 'assets/icons/png/256x256.png'),
     webPreferences: {
       nodeIntegration: true
     }})
@@ -17,7 +17,7 @@ function createWindow () {
   
   let tray = null
 app.on('ready', () => {
-  tray = new Tray('assets/icons/png/512x512.png')
+  tray = new Tray('assets/icons/png/256x256.png')
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Youtube Music', type: 'radio', checked: true },
   ])
