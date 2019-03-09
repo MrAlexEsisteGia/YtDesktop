@@ -13,6 +13,11 @@
   "author": "MrAlexEsisteGia",
   "license": "",
   "devDependencies": {
-    "electron": "^4.0.6"
+    "electron": "^4.0.6",
+    "electron-packager": "^13.1.1"
+  },
+  "dependencies": {
+    "gulp-iconutil": "^1.2.1",
+    "iconutil": "^1.0.2"
   }
 }
