@@ -11,7 +11,7 @@
     "Youtube"
   ],
   "author": "MrAlexEsisteGia",
-  "license": "",
+  "license": "GNU GPLv3",
   "devDependencies": {
     "electron": "^4.0.6"
   },
