@@ -1,5 +1,10 @@
-const {app, BrowserWindow, Menu, Tray} = require('electron')
+const {app, BrowserWindow, Menu, Tray, nativeImage} = require('electron')
 var path = require('path')
+
+var icon = path.join(__dirname, 'assets/icons/256x256.png');
+const trayimage = nativeImage.createFromPath(icon);
+var grayicon = path.join(__dirname, 'assets/icons/256x256mono.png');
+const graytrayimage = nativeImage.createFromPath(grayicon);
 
 let mainWindow
 let loadingWindow
@@ -14,11 +19,11 @@ function createWindow () {
     frame:false
   })
   loadingWindow.setMenuBarVisibility(false)
-  loadingWindow.loadFile('assets/icons/png/icon.html')
+  loadingWindow.loadFile('assets/icons/icon.html')
   
 
   mainWindow = new BrowserWindow({
-	icon: ('assets/icons/png/512x512.png'),
+	icon: (icon),
 	backgroundColor: '#000000',
 	show: false,
     webPreferences: {
@@ -40,15 +45,15 @@ function createWindow () {
 
 let tray = null
 mainWindow.once('ready-to-show', () => {
-tray = new Tray('assets/icons/png/256x256.png')
+tray = new Tray(trayimage)
 tray.setToolTip('Yt Desktop')
 tray.on('click', () => {
  if(mainWindow.isVisible()){
   mainWindow.hide()
-  tray.setImage('assets/icons/png/256x256mono.png')
+  tray.setImage(graytrayimage)
 } else {
   mainWindow.show()
-  tray.setImage('assets/icons/png/256x256.png')
+  tray.setImage(trayimage)
 }
 })
 })
