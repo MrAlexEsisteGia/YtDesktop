@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu, Tray, nativeImage} = require('electron')
+const {app, BrowserWindow, Tray, nativeImage} = require('electron')
 var path = require('path')
 
 var icon = path.join(__dirname, 'assets/icons/256x256.png');
