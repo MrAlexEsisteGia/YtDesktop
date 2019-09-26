@@ -1,3 +1,11 @@
+BE AWARE:    
+this beta is a mess so stuff WILL break        
+turn around if you want to see something that has a resemblance of a program https://github.com/MrAlexEsisteGia/YtDesktop/tree/master
+----------------------     
+
+
+
+
 Windows:           
 ----------------------          
 Devs:            
