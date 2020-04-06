@@ -11,11 +11,11 @@ If you want, share the project so i know that people want it
 Also shameless plug: [Twitter](https://twitter.com/MrAlexEsisteGia)
 
 
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/MrAlexEsisteGia/YtDesktop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MrAlexEsisteGia/YtDesktop/alerts/) 
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/MrAlexEsisteGia/YtDesktop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MrAlexEsisteGia/YtDesktop/context:javascript)  
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/MrAlexEsisteGia/YtDesktop.svg?style=flat-square&?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MrAlexEsisteGia/YtDesktop/alerts/) 
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/MrAlexEsisteGia/YtDesktop.svg?style=flat-square&?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/MrAlexEsisteGia/YtDesktop/context:javascript)  
 [![CodeFactor](https://www.codefactor.io/repository/github/mralexesistegia/ytdesktop/badge)](https://www.codefactor.io/repository/github/mralexesistegia/ytdesktop)
 [![Build status](https://ci.appveyor.com/api/projects/status/l13q29nr44xc1xow/branch/master?svg=true)](https://ci.appveyor.com/project/MrAlexEsisteGia/ytdesktop/branch/master)
-![GitHub All Releases](https://img.shields.io/github/downloads/MrAlexEsisteGia/YtDesktop/total)
+![GitHub All Releases](https://img.shields.io/github/downloads/MrAlexEsisteGia/YtDesktop/total?style=flat-square)
 
 Windows:           
 ----------------------          
