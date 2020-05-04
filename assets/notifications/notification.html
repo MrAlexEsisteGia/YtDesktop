@@ -6,7 +6,6 @@
   background-color: lime;
   bottom: 0%;
 }
-
 notification {
   font-size: 102%;
   color: #f3e2c2;
@@ -23,7 +22,6 @@ notification {
   transition: 1s opacity;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-
 </style>
 
 
@@ -42,12 +40,14 @@ notification {
 
 
 <script>
-function changesong(songplaying) {
+  var title = "stuff got fuckd";
+  var artist;
+function changesong() {
   clearInterval(timeint);
   var width = 0;
   var timeint = setInterval(timecalc, 23);
   document.getElementById("notificationid").style.opacity = '0.9';
-  document.getElementById("currentsong").textContent=songplaying;
+  document.getElementById("currentsong").textContent=title;
   function timecalc() {
     if (width >= 100) {
       document.getElementById("notificationid").style.opacity = '0';

@@ -4,7 +4,12 @@
   "description": "A Youtube Music Desktop client",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.mralexesistegia.ytdesktop"
   },
   "repository": "https://github.com/MrAlexEsisteGia/YtDesktop",
   "keywords": [
@@ -13,7 +18,14 @@
   "author": "MrAlexEsisteGia",
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "electron": "^4.0.6"
+    "electron": "^8.2.4",
+    "electron-builder": "^21.2.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "discord-rich-presence": "^0.0.8",
+    "discord-rpc": "^3.1.0",
+    "v8-compile-cache": "^2.1.0",
+    "wait": "^0.1.0",
+    "wait-notify": "^1.0.3"
+  }
 }
