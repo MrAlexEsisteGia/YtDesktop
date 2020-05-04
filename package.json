@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder --publish never"
   },
   "build": {
     "appId": "com.mralexesistegia.ytdesktop"
@@ -24,8 +24,6 @@
   "dependencies": {
     "discord-rich-presence": "^0.0.8",
     "discord-rpc": "^3.1.0",
-    "v8-compile-cache": "^2.1.0",
-    "wait": "^0.1.0",
-    "wait-notify": "^1.0.3"
+    "v8-compile-cache": "^2.1.0"
   }
 }
