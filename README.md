@@ -1,3 +1,6 @@
+
+[Download](https://ytdesktop.mralexesistegia.com/#download)
+
 News(?)
 ------------
 Plot twist im not dead *yet* and this project isn't either            
@@ -15,31 +18,3 @@ Also shameless plug: [Twitter](https://twitter.com/MrAlexEsisteGia)
 [![CodeFactor](https://www.codefactor.io/repository/github/mralexesistegia/ytdesktop/badge?style=flat-square)](https://www.codefactor.io/repository/github/mralexesistegia/ytdesktop)
 [![Build status](https://ci.appveyor.com/api/projects/status/l13q29nr44xc1xow/branch/master?svg=true&?style=flat-square)](https://ci.appveyor.com/project/MrAlexEsisteGia/ytdesktop/branch/master)
 [![GitHub All Releases](https://img.shields.io/github/downloads/MrAlexEsisteGia/YtDesktop/total?style=flat-square)](https://github.com/MrAlexEsisteGia/YtDesktop/releases)
-
-Windows:           
-----------------------          
-Devs:            
-```   
-Make sure to have NodeJs installed         
-Download and UnZip the repository      
-Open "install.bat" to Install           
-and "start.bat" to open YtDesktop            
-```
-Users:               
-```
-Go to releases and download "YtDesktop-win32-x64.zip"          
-Unzip it, and open "YtDesktop.exe"                    
-```           
-Linux:          
-------------            
-Devs:            
-```           
-Make sure to have NodeJs installed           
-Download and UnZip the repository          
-Open "install.sh" to Install          
-and "start.sh" to open YtDesktop            
-```
-Users:         
-```
-Coming soon             
-```
