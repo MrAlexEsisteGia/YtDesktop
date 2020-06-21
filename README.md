@@ -4,6 +4,10 @@
 
 [Download](https://ytdesktop.mralexesistegia.com/#download)
 
+Also before anyone asks:
+yes i learnt javascript only to code this app, deal with it
+and also yes, the code is dogshit
+
 ![Random image of the app](https://ytdesktop.mralexesistegia.com/assets/images/image01.jpg)
 
 News(?)
