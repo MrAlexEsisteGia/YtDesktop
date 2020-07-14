@@ -1,21 +1,46 @@
 /*jshint esversion: 6 */
 const {
     app,
+    ipcMain,
     BrowserWindow,
     BrowserView,
     Tray,
     globalShortcut
 } = require('electron');
 const path = require('path');
-const client = require('discord-rich-presence')('558712944511156236');
+const URL = require('url').URL
+const client = require('./rpc-helper')('558712944511156236');
+const validator = require('validator');
+const request = require('request')
 require('v8-compile-cache');
-
 const icon = path.join(__dirname, 'assets/icons/256x256.png');
 const grayicon = path.join(__dirname, 'assets/icons/256x256mono.png');
 
-let tray, notificationWindow, mainWindow, loadingWindow, title, artist, link, timenow, timefinish, view;
+//fuck me what is this dogshit
+let tray, notificationWindow, mainWindow, loadingWindow, view, percentimage, discordrichupdater;
+
+//also use this ffs (objects)
+let songinfo = {}
+let discordinfo = {}
+
 
 app.on('ready', createWindow); // create main window
+
+//Lord microsoft doesnt want that we buy youtube's stuff without their api
+//so we're gonna comply because ;-;
+app.on('web-contents-created', (event, contents) => {
+    contents.on('will-navigate', (event, navigationUrl) => {
+        const parsedUrl = new URL(navigationUrl)
+        //delet debug stuff before release
+        //if this comment ends up on github im dumb, also hi, how are you doing?
+        //also, fuck this doesnt work
+        if (navigationUrl === 'https://music.youtube.com/music_premium') {
+            console.log(navigationUrl)
+            console.log(parsedUrl)
+            event.preventDefault()
+        }
+    })
+})
 
 function createWindow() {
     // startup screen
@@ -46,9 +71,11 @@ function createWindow() {
         webPreferences: {nodeIntegration: true}
     });
 
+    //help with login problems
     mainWindow.webContents.session.setUserAgent(
         "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/71.0"
     );
+
     mainWindow.setMenuBarVisibility(false);
     mainWindow.loadFile('frame.html');
     view = new BrowserView({
@@ -71,7 +98,11 @@ function createWindow() {
         mainWindow.show();
         loadingWindow.close();
         globalShortcut.register('Alt+x', () => {
-            notificationWindow.webContents.executeJavaScript('changesong();');
+
+            updatesonginfo()
+
+
+            sendnotification(songinfo.title, songinfo.artist, songinfo.img)
         });
         initializetray();
 
@@ -80,6 +111,7 @@ function createWindow() {
             largeImageKey: '512x512',
             smallImageKey: 'paused'
         });
+        songinfo.isplaying = false
     });
 
     // notifications window
@@ -96,77 +128,48 @@ function createWindow() {
     });
     notificationWindow.setIgnoreMouseEvents(true);
     notificationWindow.setMenuBarVisibility(false);
-    notificationWindow.loadFile('assets/notifications/notification.html');
+    notificationWindow.loadFile('assets/notifications/notificationbeta.html');
 
     //discord rich presence & notifications activator
     view.webContents.on('media-paused', function () {
+        if (discordrichupdater)
+            clearInterval(discordrichupdater)
         client.updatePresence({
             state: 'Paused',
             largeImageKey: '512x512',
             smallImageKey: 'paused'
         });
+        songinfo.isplaying = false
     });
     view.webContents.on('media-started-playing', function () {
-        setTimeout(function () {
-
-            //this is ugly like me
-            gettitle().then(result => {
-                title = result
-            }).catch(err => {
-                console.log(err)
-            });
-            gettime().then(result => {
-                timenow = result
-            }).catch(err => {
-                console.log(err)
-            });
-            getfinishtime().then(result => {
-                timefinish = result
-            }).catch(err => {
-                console.log(err)
-            });
-            getartist().then(result => {
-                artist = result
-            }).catch(err => {
-                console.log(err)
-            });
-            getlink().then(result => {
-                link = result
-            }).catch(err => {
-                console.log(err)
-            });
-
-
-            setTimeout(function () {
-                //discord
-                client.updatePresence({
-                    state: `Author: ${artist}`,
-                    details: `Title: ${title}`,
-                    largeImageKey: '512x512',
-                    smallImageKey: 'playing',
-                    instance: true,
-                    spectateSecret: link,
-                    startTimestamp: Date.now() - (timenow * 1000),
-                    endTimestamp: Date.now() + ((timefinish - timenow) * 1000)
-                });
-
-                notificationWindow.webContents.executeJavaScript(`artist = "${artist}"`);
-                sendnotification(title);
-            }, 200);
+        songinfo.isplaying = true
+        setTimeout(async function () {
+            discordrichupdater = setInterval(discordrichpresencesyncer, 3000);
+            await updatesonginfo()
+            discordrichpresencesyncer()
+            sendnotification(songinfo.title, songinfo.artist, songinfo.img);
         }, 750);
 
     });
-//oshit seqrity hole
+
+    ipcMain.on('senddiscord', (event, arg) => {
+        pushsong();
+    })
+
     client.on('spectate', (secret) => {
-        if (secret.length !== 11) {
-            sendnotification("something went wrong plz report " + secret.length);
-            return;
-        }
-        const url = 'https://music.youtube.com/watch?v=' + secret;
-        view.webContents.loadURL(url);
+        if (secret.length === 11 && isBase64(secret, {urlSafe: true}))
+            view.webContents.loadURL('https://music.youtube.com/watch?v=' + secret);
+    });
+    client.on('connected', (user) => {
+        discordinfo.id = user.id
+        discordinfo.name = user.username
+        discordinfo.tag = user.discriminator
+        discordinfo.avatar = user.avatar
+        discordinfo.isconnected = true //the madlad declared an object as a bool, you did it... you nasty bastard
     });
 
-// friendly reminder for myself: keep all the functions under this fucking comment, you moron, you fool... got it? probably not
+
+// friendly reminder for myself: keep all the functions under this fucking comment, you moron, you fool... got it?           probably not
 
     // tray
     function initializetray() {
@@ -184,13 +187,41 @@ function createWindow() {
     }
 
     // Notification Helper
-    function sendnotification(message) {
-        notificationWindow.webContents.executeJavaScript(`title = "${message}"`);
-        notificationWindow.webContents.executeJavaScript('changesong()');
+    function sendnotification(text1, text2, image) {
+        let safeimage
+        if (image)
+            if (validator.isURL(image))
+                safeimage = image
+        notificationWindow.webContents.executeJavaScript(`changesong("${validator.escape(text1)}", "${validator.escape(text2)}", "${safeimage}")`);
     }
 
+    //sorry ytmd devs, i had to YOINK that code <3
+    async function discordrichpresencesyncer() {
+        await updatesonginfo()
 
-    //get current time
+
+        songpercent = ((songinfo.timenow * 100) / songinfo.timefinish)
+        if (songpercent < 10)
+            percentimage = "10"
+        else if (songpercent < 30)
+            percentimage = "30"
+        else if (songpercent < 70)
+            percentimage = "70"
+        else if (songpercent < 90)
+            percentimage = "90"
+
+        client.updatePresence({
+            state: `Author: ${songinfo.artist}`,
+            details: `Title: ${songinfo.title}`,
+            largeImageKey: percentimage,
+            smallImageKey: 'playing',
+            instance: true,
+            spectateSecret: songinfo.link,
+            startTimestamp: Date.now() - (songinfo.timenow * 1000),
+            endTimestamp: Date.now() + ((songinfo.timefinish - songinfo.timenow) * 1000)
+        });
+    }
+
     function gettime() {
         return view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuenow');")
             .then((result) => {
@@ -198,7 +229,6 @@ function createWindow() {
             });
     }
 
-    //get finishtime
     function getfinishtime() {
         return view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuemax');")
             .then((result) => {
@@ -206,7 +236,6 @@ function createWindow() {
             });
     }
 
-    //get title
     function gettitle() {
         return view.webContents.executeJavaScript("document.getElementsByClassName('title ytmusic-player-bar')[0].innerText")
             .then((result) => {
@@ -214,9 +243,6 @@ function createWindow() {
             });
     }
 
-
-    //sorry ytmd devs, i had to YOINK that code <3
-    //get artist
     function getartist() {
         return view.webContents.executeJavaScript(
             `var bar = document.getElementsByClassName('subtitle ytmusic-player-bar')[0];
@@ -236,5 +262,33 @@ function createWindow() {
             });
     }
 
+    function getimg() {
+        return view.webContents.executeJavaScript("document.getElementsByClassName('image style-scope ytmusic-player-bar')[0].src;")
+            .then((result) => {
+                if (!result) return undefined
+                var sanitizedresult = result.split('=')[0].trim() + "=w250";
+                return sanitizedresult;
+            });
+    }
+
+    async function updatesonginfo() {
+        songinfo.title = await gettitle()
+        songinfo.artist = await getartist()
+        songinfo.link = await getlink()
+        songinfo.img = await getimg()
+        songinfo.time = await gettime()
+        songinfo.timefinish = await getfinishtime()
+        //await songinfo.isplaying = tbd
+        return
+    }
+
+    async function pushsong() {
+        await updatesonginfo()
+        console.log(songinfo.time)
+        request.post({
+            uri: 'http://localhost:3000/bruh',
+            json: {songe: songinfo.link, userid: discordinfo.id, time: songinfo.time}
+        })
+    }
 
 }// oh boy the end of the suffering

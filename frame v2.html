@@ -108,10 +108,9 @@
     </div>
 </div>
 
-
+<>
 
 <script>
-    const { ipcRenderer } = require('electron')
     const remote = require('electron').remote
 
     document.getElementById("btn-close").addEventListener("click", function (e) {
@@ -137,7 +136,8 @@
     });
 
     document.getElementById("btn-show-settings").addEventListener("click", function (e) {
-        ipcRenderer.send('senddiscord')
+        let window = remote.getCurrentWindow();
+        window.close();
     });
 
 </script>
