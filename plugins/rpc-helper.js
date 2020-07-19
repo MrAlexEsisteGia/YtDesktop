@@ -1,3 +1,5 @@
+//originally made by https://www.npmjs.com/~snek
+
 'use strict';
 
 const Discord = require('discord-rpc');

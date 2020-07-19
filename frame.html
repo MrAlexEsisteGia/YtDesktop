@@ -15,11 +15,11 @@
             height: 100%;
             overflow: hidden;
             user-select: none;
-            color: #0009ff;
+            background: #000000;
         }
 
         .drag {
-            -webkit-app-region:drag;
+            -webkit-app-region: drag;
         }
 
         .no-drag {
@@ -32,6 +32,7 @@
 
         .bar {
             position: absolute;
+            height: 20px;
             top: 0px;
             left: 0;
             right: 0;
@@ -39,29 +40,25 @@
             width: 100%;
         }
 
-        .title {
-            float: left;
-            margin: -4px 0 0 4px;
-            color: #FFF;
-        }
 
         .cmd-btns {
             float: right;
             color: white;
+            height: 100%;
         }
 
         .cmd-btn {
             float: left;
-            width: 30px;
-            height: 30px;
+            height: 100%;
+            width: 20px;
             /*margin: -2px 0 0 0;*/
-            padding: 0px 0;
+            /* padding: 0px 0; */
             text-align: center;
-            font-size: 15px;
+            font-size: 100% !important;
         }
 
         .cmd-btn:hover {
-            background: rgba( 255, 255, 255, 0.1 );
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .hide {
@@ -72,6 +69,7 @@
             background: rgba(255, 38, 0, 0.97);
         }
 
+
     </style>
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -81,37 +79,32 @@
 
 <body>
 
-<div id="nice-titlebar" class="bar drag">
-    <div class="title">
-        <span id="music-title"></span>
-    </div>
-
-    <div class="cmd-btns">
-        <div class="no-drag pointer cmd-btn green-text hide" id="btn-update">
-            <i class="material-icons tiny" title="New Update">sync</i>
+<div class="bar drag" id="nice-titlebar">
+    <div class="cmd-btns no-drag">
+        <div class="pointer cmd-btn green-text hide" id="btn-update">
+            <i class="material-icons cmd-btn" title="New Update">sync</i>
         </div>
-        <div class="no-drag pointer cmd-btn hide" id="btn-show-companion">
-            <i class="material-icons tiny" title="Show Companion">surround_sound</i>
+        <div class="pointer cmd-btn" id="discord">
+            <i class="material-icons cmd-btn" title="Discord">surround_sound</i>
         </div>
-        <div class="no-drag pointer cmd-btn" id="btn-show-settings">
-            <i class="material-icons tiny" title="Show Setting">settings</i>
+        <div class="pointer cmd-btn" id="settings">
+            <i class="material-icons cmd-btn" title="Show Setting">settings</i>
         </div>
-        <div class="no-drag pointer cmd-btn" id="btn-minimize">
-            <i class="material-icons tiny" title="Minimize">remove</i>
+        <div class="pointer cmd-btn" id="btn-minimize">
+            <i class="material-icons cmd-btn" title="Minimize">remove</i>
         </div>
-        <div class="no-drag pointer cmd-btn" id="btn-maximize">
-            <i class="material-icons tiny" title="Maximize">crop_square</i>
+        <div class="pointer cmd-btn" id="btn-maximize">
+            <i class="material-icons cmd-btn" title="Maximize">crop_square</i>
         </div>
-        <div class="no-drag pointer cmd-btn hover-red" id="btn-close">
-            <i class="material-icons tiny" title="Close">close</i>
+        <div class="pointer cmd-btn hover-red" id="btn-close">
+            <i class="material-icons cmd-btn" title="Close">close</i>
         </div>
     </div>
 </div>
 
 
-
 <script>
-    const { ipcRenderer } = require('electron')
+    const {ipcRenderer} = require('electron')
     const remote = require('electron').remote
 
     document.getElementById("btn-close").addEventListener("click", function (e) {
@@ -125,18 +118,15 @@
     });
 
     document.getElementById("btn-maximize").addEventListener("click", function (e) {
-        let window = remote.getCurrentWindow();
-        console.log("1")
-        if (window.isMaximized) {
-            window.unmaximize();
-            console.log("2")
-        } else {
-            window.maximize();
-            console.log("3")
-        }
+        let window = remote.BrowserWindow.getFocusedWindow();
+        window.isMaximized() ? window.unmaximize() : window.maximize();
     });
 
-    document.getElementById("btn-show-settings").addEventListener("click", function (e) {
+    document.getElementById("settings").addEventListener("click", function (e) {
+        ipcRenderer.send('settings')
+    });
+
+    document.getElementById("discord").addEventListener("click", function (e) {
         ipcRenderer.send('senddiscord')
     });
 

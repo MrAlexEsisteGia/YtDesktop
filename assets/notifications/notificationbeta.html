@@ -9,7 +9,7 @@
         transition-timing-function: ease-in;
     }
 
-    div.polaroid {
+    div.notification {
         background-color: #2a2a2b;
         font-family: Verdana;
         text-align: center;
@@ -25,34 +25,120 @@
         opacity: 0
     }
 
+    #songbrowser {
+        background-color: rgba(42, 42, 43, 0.47);
+        font-family: Verdana;
+        text-align: center;
+        position: absolute;
+        overflow: auto;
+        width: 16%;
+        height: 30%;
+        right: 1%;
+        transform: translateY(50%);
+        bottom: 50%;
+        border-radius: 2px;
+        transition: 0.6s opacity;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: center;
+        opacity: 0%;
+    }
+
+    .currentsong {
+        background-color: #2a2a2b;
+        font-family: Verdana;
+        text-align: center;
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        height: 30%;
+        right: 1%;
+        transform: translateY(50%);
+        bottom: 50%;
+        border-radius: 2px;
+        transition: 0.6s opacity;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        text-align: center;
+    }
+
+    #songimg {
+        position: absolute;
+        left: 3%;
+        top: 5%;
+        bottom: 5%;
+        height: 90%;
+    }
+
+    #songbar {
+        position: absolute;
+        background-color: chartreuse;
+        bottom: 0%;
+        height: 5%;
+        width: 5%;
+        transition: width 1s;
+        transition-timing-function: ease-in-out;
+    }
+
+    .artist{
+        position: relative;
+        color: rgb(170, 170, 170);
+        font-family: Roboto, Noto Naskh Arabic UI, Arial, sans-serif;
+        font-weight: 400;
+    }
+
+    .song{
+        position: relative;
+        color: rgb(255, 255, 255);
+        font-family: Roboto, Noto Naskh Arabic UI, Arial, sans-serif;
+        font-weight: 500;
+    }
+
     div.container {
         padding: 10px;
     }
+
 </style>
 
-<div class="polaroid" id="notificationid">
+<div id="songbrowser">
+    <div class="currentsong">
+        <img id="songimg" src="icon.png">
+        <p class="song" id="currentsong"></p>
+        <p class="artist" id="currentartist"></p>
+        <div id="songbar">
+        </div>
+    </div>
+</div>
+
+
+
+<div class="notification" id="notificationid">
     <img id="icon" src="icon.png" style="width:100%">
     <div class="container">
-        <p id="currentsong"></p>
-        <p id="currentartist"></p>
+        <p id="song"></p>
+        <p id="artist"></p>
     </div>
     <div id="timebar"></div>
 </div>
 
 
 <script>
-    function changesong(text1, text2, image) {
-        if (image)
-            document.getElementById("icon").src = image;
-        else
-            document.getElementById("icon").src = "icon.png";
+    const {ipcRenderer} = require('electron')
+    const remote = require('electron').remote
 
+    function changesong(text1, text2, image) {
+        if (image) {
+            document.getElementById("icon").src = image;
+            document.getElementById("songimg").src = image;
+        } else {
+            document.getElementById("icon").src = "icon.png";
+        }
 
         document.getElementById("currentsong").innerHTML = text1;
+        document.getElementById("song").innerHTML = text1;
+
 
         if (text2)
             document.getElementById("currentartist").innerHTML = text2;
-
+        document.getElementById("artist").innerHTML = text2;
 
         shownotification()
         setTimeout(hidenotification, 2400)
@@ -61,11 +147,17 @@
     function shownotification() {
         document.getElementById("notificationid").style.opacity = '0.9';
         document.getElementById("timebar").style.width = '100%';
+        document.getElementById("songbrowser").style.opacity = '1';
     }
 
     function hidenotification() {
         document.getElementById("notificationid").style.opacity = '0';
         document.getElementById("timebar").style.width = '1%';
+        document.getElementById("songbrowser").style.opacity = '0';
+    }
+
+    function updateoverlay(percent) {
+        document.getElementById("songbar").style.width = percent + "%";
     }
 
 </script>

@@ -7,14 +7,16 @@ const {
     Tray,
     globalShortcut
 } = require('electron');
+const { autoUpdater } = require("electron-updater")
 const path = require('path');
 const URL = require('url').URL
-const client = require('./rpc-helper')('558712944511156236');
+const client = require('./plugins/rpc-helper')('558712944511156236');
 const validator = require('validator');
 const request = require('request')
-require('v8-compile-cache');
 const icon = path.join(__dirname, 'assets/icons/256x256.png');
 const grayicon = path.join(__dirname, 'assets/icons/256x256mono.png');
+const getArtistTitle = require('get-artist-title')
+autoUpdater.checkForUpdatesAndNotify()
 
 //fuck me what is this dogshit
 let tray, notificationWindow, mainWindow, loadingWindow, view, percentimage, discordrichupdater;
@@ -87,7 +89,6 @@ function createWindow() {
         height: true
     });
     view.webContents.loadURL('https://music.youtube.com');
-
     mainWindow.setBrowserView(view);
     mainWindow.on('closed', function () {
         app.quit();
@@ -98,10 +99,7 @@ function createWindow() {
         mainWindow.show();
         loadingWindow.close();
         globalShortcut.register('Alt+x', () => {
-
             updatesonginfo()
-
-
             sendnotification(songinfo.title, songinfo.artist, songinfo.img)
         });
         initializetray();
@@ -195,12 +193,11 @@ function createWindow() {
         notificationWindow.webContents.executeJavaScript(`changesong("${validator.escape(text1)}", "${validator.escape(text2)}", "${safeimage}")`);
     }
 
-    //sorry ytmd devs, i had to YOINK that code <3
     async function discordrichpresencesyncer() {
         await updatesonginfo()
 
 
-        songpercent = ((songinfo.timenow * 100) / songinfo.timefinish)
+        songpercent = ((songinfo.time * 100) / songinfo.timefinish)
         if (songpercent < 10)
             percentimage = "10"
         else if (songpercent < 30)
@@ -217,9 +214,15 @@ function createWindow() {
             smallImageKey: 'playing',
             instance: true,
             spectateSecret: songinfo.link,
-            startTimestamp: Date.now() - (songinfo.timenow * 1000),
-            endTimestamp: Date.now() + ((songinfo.timefinish - songinfo.timenow) * 1000)
+            startTimestamp: Date.now() - (songinfo.time * 1000),
+            endTimestamp: Date.now() + ((songinfo.timefinish - songinfo.time) * 1000)
         });
+    }
+
+    async function overlaysyncer() {
+        console.log(songinfo.percent)
+        notificationWindow.webContents.executeJavaScript(`updateoverlay("${songinfo.percent}")`);
+        console.log("sync")
     }
 
     function gettime() {
@@ -255,7 +258,6 @@ function createWindow() {
     }
 
     function getlink() {
-        //getlink (for discord richpresence spectator function)
         return view.webContents.executeJavaScript("document.getElementsByClassName('ytp-title-link yt-uix-sessionlink')[0].href")
             .then((result) => {
                 return result.split("=").pop().trim();
@@ -278,8 +280,10 @@ function createWindow() {
         songinfo.img = await getimg()
         songinfo.time = await gettime()
         songinfo.timefinish = await getfinishtime()
+        songinfo.percent = ((songinfo.time * 100) / songinfo.timefinish)
         //await songinfo.isplaying = tbd
-        return
+        overlaysyncer()
+
     }
 
     async function pushsong() {
