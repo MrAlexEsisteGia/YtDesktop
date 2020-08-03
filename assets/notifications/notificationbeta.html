@@ -121,8 +121,7 @@
 
 
 <script>
-    const {ipcRenderer} = require('electron')
-    const remote = require('electron').remote
+    const {ipcRenderer, remote} = require('electron')
 
     function changesong(text1, text2, image) {
         if (image) {
@@ -145,19 +144,21 @@
     }
 
     function shownotification() {
+        document.getElementById("songbar").style.width = remote.getGlobal("songinfo.percent") + "%";
         document.getElementById("notificationid").style.opacity = '0.9';
         document.getElementById("timebar").style.width = '100%';
         document.getElementById("songbrowser").style.opacity = '1';
     }
 
     function hidenotification() {
+        document.getElementById("songbar").style.width = remote.getGlobal("songinfo.percent") + "%";
         document.getElementById("notificationid").style.opacity = '0';
         document.getElementById("timebar").style.width = '1%';
         document.getElementById("songbrowser").style.opacity = '0';
     }
 
-    function updateoverlay(percent) {
-        document.getElementById("songbar").style.width = percent + "%";
+    function updateoverlay() {
+        document.getElementById("songbar").style.width = remote.getGlobal("songinfo.percent") + "%";
     }
 
 </script>

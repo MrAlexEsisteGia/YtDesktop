@@ -97,7 +97,10 @@
             <i class="material-icons cmd-btn" title="Maximize">crop_square</i>
         </div>
         <div class="pointer cmd-btn hover-red" id="btn-close">
-            <i class="material-icons cmd-btn" title="Close">close</i>
+            <img src="./assets/icons/close.svg" title="Close" alt="">
+        </div>
+        <div class="pointer cmd-btn hover-red" id="btn-download">
+            <img src="./assets/icons/download.svg" title="Download" alt="">
         </div>
     </div>
 </div>
@@ -128,6 +131,10 @@
 
     document.getElementById("discord").addEventListener("click", function (e) {
         ipcRenderer.send('senddiscord')
+    });
+
+    document.getElementById("btn-download").addEventListener("click", function (e) {
+        ipcRenderer.send('download')
     });
 
 </script>

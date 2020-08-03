@@ -1,7 +1,6 @@
 //originally made by https://www.npmjs.com/~snek
-
+/*jshint esversion: 6 */
 'use strict';
-
 const Discord = require('discord-rpc');
 const EventEmitter = require('events');
 

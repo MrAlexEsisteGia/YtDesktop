@@ -1,0 +1,64 @@
+@import "@material/list/mdc-list";
+@import "@material/menu-surface/mdc-menu-surface";
+@import "@material/menu/mdc-menu";
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    background: #4b4f53;
+}
+
+.drag {
+    -webkit-app-region: drag;
+}
+
+.no-drag {
+    -webkit-app-region: no-drag
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.bar {
+    position: absolute;
+    height: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #1d1d1d;
+    width: 100%;
+}
+
+
+.cmd-btns {
+    float: right;
+    color: white;
+    height: 100%;
+}
+
+.cmd-btn {
+    float: left;
+    height: 100%;
+    width: 20px;
+    /*margin: -2px 0 0 0;*/
+    /* padding: 0px 0; */
+    text-align: center;
+    font-size: 100% !important;
+}
+
+.cmd-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.hide {
+    display: none;
+}
+
+.hover-red:hover {
+    background: rgba(255, 38, 0, 0.97);
+}
+

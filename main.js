@@ -5,14 +5,23 @@ const {
     BrowserWindow,
     BrowserView,
     Tray,
+    dialog,
     globalShortcut
 } = require('electron');
-const { autoUpdater } = require("electron-updater")
+const {autoUpdater} = require("electron-updater")
+const fs = require('fs');
+
+const NodeID3 = require('node-id3')
+const pathToFfmpeg = require('ffmpeg-static');
+const ytdl = require('ytdl-core');
 const path = require('path');
-const URL = require('url').URL
-const client = require('./plugins/rpc-helper')('558712944511156236');
+const ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(pathToFfmpeg)
+
+//const URL = require('url').URL
 const validator = require('validator');
 const request = require('request')
+const client = require('./plugins/rpc-helper')('558712944511156236');
 const icon = path.join(__dirname, 'assets/icons/256x256.png');
 const grayicon = path.join(__dirname, 'assets/icons/256x256mono.png');
 const getArtistTitle = require('get-artist-title')
@@ -70,7 +79,10 @@ function createWindow() {
         width: 1280,
         height: 720,
         frame: false,
-        webPreferences: {nodeIntegration: true}
+        webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+        }
     });
 
     //help with login problems
@@ -122,9 +134,14 @@ function createWindow() {
         alwaysOnTop: true,
         frame: false,
         skipTaskbar: true,
-        type: `toolbar`
+        type: `toolbar`,
+        webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+        }
     });
     notificationWindow.setIgnoreMouseEvents(true);
+    notificationWindow.webContents.openDevTools()
     notificationWindow.setMenuBarVisibility(false);
     notificationWindow.loadFile('assets/notifications/notificationbeta.html');
 
@@ -152,6 +169,9 @@ function createWindow() {
 
     ipcMain.on('senddiscord', (event, arg) => {
         pushsong();
+    })
+    ipcMain.on('download', (event, arg) => {
+        downloadsong();
     })
 
     client.on('spectate', (secret) => {
@@ -220,8 +240,7 @@ function createWindow() {
     }
 
     async function overlaysyncer() {
-        console.log(songinfo.percent)
-        notificationWindow.webContents.executeJavaScript(`updateoverlay("${songinfo.percent}")`);
+        await notificationWindow.webContents.executeJavaScript(`updateoverlay()`);
         console.log("sync")
     }
 
@@ -282,8 +301,27 @@ function createWindow() {
         songinfo.timefinish = await getfinishtime()
         songinfo.percent = ((songinfo.time * 100) / songinfo.timefinish)
         //await songinfo.isplaying = tbd
-        overlaysyncer()
+        //overlaysyncer()
 
+    }
+
+    async function downloadsong() {
+        let youtubeurl = "https://www.youtube.com/watch?v=" + songinfo.link
+        if (!ytdl.validateURL(youtubeurl))
+            return
+        let filename = dialog.showSaveDialogSync(mainWindow, {
+            title: "Download song",
+            defaultPath: `${songinfo.artist} - ${songinfo.title}`
+        })
+        if (filename === undefined)
+            return
+
+        await ffmpeg(ytdl(youtubeurl, {filter: 'audioonly'}))
+            .output(filename + ".mp3")
+            .on('end', function() {
+                console.log('Finished processing');
+            })
+            .run();
     }
 
     async function pushsong() {
