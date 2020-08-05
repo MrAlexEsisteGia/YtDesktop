@@ -1,7 +1,7 @@
 "appId": "com.mralexesistegia.ytdesktop",
-    "directories": {
-                       "output": "BuildOutput"
-    }
+             "directories": {
+                 "output": "BuildOutput"
+             },
 "appx": {
     "identityName": "29668MrAlex.YtDesktop",
     "publisher": "CN=C0082EE7-2DA8-4A88-9BAC-2CC8821BBE50",

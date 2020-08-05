@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 8 */
 const {
     app,
     ipcMain,
@@ -9,22 +9,15 @@ const {
     globalShortcut
 } = require('electron');
 const {autoUpdater} = require("electron-updater")
-const fs = require('fs');
 
-const NodeID3 = require('node-id3')
-const pathToFfmpeg = require('ffmpeg-static');
-const ytdl = require('ytdl-core');
 const path = require('path');
-const ffmpeg = require('fluent-ffmpeg');
-ffmpeg.setFfmpegPath(pathToFfmpeg)
-
 //const URL = require('url').URL
 const validator = require('validator');
 const request = require('request')
 const client = require('./plugins/rpc-helper')('558712944511156236');
+const getArtistTitle = require('get-artist-title')
 const icon = path.join(__dirname, 'assets/icons/256x256.png');
 const grayicon = path.join(__dirname, 'assets/icons/256x256mono.png');
-const getArtistTitle = require('get-artist-title')
 autoUpdater.checkForUpdatesAndNotify()
 
 //fuck me what is this dogshit
@@ -66,7 +59,7 @@ function createWindow() {
         skipTaskbar: true,
         type: `toolbar`
     });
-    loadingWindow.loadFile('assets/icons/icon.html');
+    loadingWindow.loadFile('./src/assets/icons/icon.html');
     loadingWindow.setMenuBarVisibility(false);
     loadingWindow.setIgnoreMouseEvents(true);
 
@@ -91,7 +84,7 @@ function createWindow() {
     );
 
     mainWindow.setMenuBarVisibility(false);
-    mainWindow.loadFile('frame.html');
+    mainWindow.loadFile('./src/frame.html');
     view = new BrowserView({
         webPreferences: {nodeIntegration: false}
     });
@@ -143,7 +136,7 @@ function createWindow() {
     notificationWindow.setIgnoreMouseEvents(true);
     notificationWindow.webContents.openDevTools()
     notificationWindow.setMenuBarVisibility(false);
-    notificationWindow.loadFile('assets/notifications/notificationbeta.html');
+    notificationWindow.loadFile('./src/assets/notifications/notificationbeta.html');
 
     //discord rich presence & notifications activator
     view.webContents.on('media-paused', function () {
@@ -305,24 +298,7 @@ function createWindow() {
 
     }
 
-    async function downloadsong() {
-        let youtubeurl = "https://www.youtube.com/watch?v=" + songinfo.link
-        if (!ytdl.validateURL(youtubeurl))
-            return
-        let filename = dialog.showSaveDialogSync(mainWindow, {
-            title: "Download song",
-            defaultPath: `${songinfo.artist} - ${songinfo.title}`
-        })
-        if (filename === undefined)
-            return
 
-        await ffmpeg(ytdl(youtubeurl, {filter: 'audioonly'}))
-            .output(filename + ".mp3")
-            .on('end', function() {
-                console.log('Finished processing');
-            })
-            .run();
-    }
 
     async function pushsong() {
         await updatesonginfo()
