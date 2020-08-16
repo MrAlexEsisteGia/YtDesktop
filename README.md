@@ -3,7 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/mralexesistegia/ytdesktop/badge?style=flat-square)](https://www.codefactor.io/repository/github/mralexesistegia/ytdesktop)
 [![Build status](https://ci.appveyor.com/api/projects/status/l13q29nr44xc1xow/branch/master?svg=true&?style=flat-square)](https://ci.appveyor.com/project/MrAlexEsisteGia/ytdesktop/branch/master)
 [![GitHub All Releases](https://img.shields.io/github/downloads/MrAlexEsisteGia/YtDesktop/total?style=flat-square)](https://github.com/MrAlexEsisteGia/YtDesktop/releases)
-![Discord](https://img.shields.io/discord/715732365288144959?color=blueviolet&label=Discord&logo=discord&style=flat-square)
+[![Discord](https://img.shields.io/discord/715732365288144959?color=blueviolet&label=Discord&logo=discord&style=flat-square)](https://discord.gg/sceQKWp)
 
 [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/does-not-contain-treenuts.svg)](https://forthebadge.com)
