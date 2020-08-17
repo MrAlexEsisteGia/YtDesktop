@@ -102,7 +102,7 @@ function createWindow() {
     //finished loading
     view.webContents.once('did-finish-load', function () {
         mainWindow.show();
-        loadingWindow.close();
+        loadingWindow.destroy();
         globalShortcut.register('Alt+x', () => {
             updatesonginfo()
             sendnotification(songinfo.title, songinfo.artist, songinfo.img)
@@ -200,9 +200,8 @@ function createWindow() {
     // Notification Helper
     function sendnotification(text1, text2, image) {
         let safeimage
-        if (image)
-            if (validator.isURL(image))
-                safeimage = image
+        if (image && validator.isURL(image))
+            safeimage = image
         notificationWindow.webContents.executeJavaScript(`changesong("${validator.escape(text1)}", "${validator.escape(text2)}", "${safeimage}")`);
     }
 
@@ -239,24 +238,31 @@ function createWindow() {
         console.log("sync")
     }
 
-    function gettime() {
-        let result = view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuenow');")
-        return result.trim();
 
+
+
+
+
+
+
+
+    async function gettime() {
+        let result = await view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuenow');")
+        return result.trim();
     }
 
-    function getfinishtime() {
-        let result = view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuemax');")
+    async function getfinishtime() {
+        let result = await view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuemax');")
         return result.trim();
     }
 
-    function gettitle() {
-        let result = view.webContents.executeJavaScript("document.getElementsByClassName('title ytmusic-player-bar')[0].innerText")
+    async function gettitle() {
+        let result = await view.webContents.executeJavaScript("document.getElementsByClassName('title ytmusic-player-bar')[0].innerText")
         return result.trim()
     }
 
-    function getartist() {
-        let result = view.webContents.executeJavaScript(
+    async function getartist() {
+        let result = await view.webContents.executeJavaScript(
             `var bar = document.getElementsByClassName('subtitle ytmusic-player-bar')[0];
                    var title = bar.getElementsByClassName('yt-simple-endpoint yt-formatted-string');
                    if( !title.length ) { title = bar.getElementsByClassName('byline ytmusic-player-bar') }
@@ -264,22 +270,28 @@ function createWindow() {
         return result.trim();
     }
 
-    function getid() {
-        let result =  view.webContents.executeJavaScript("document.getElementsByClassName('ytp-title-link yt-uix-sessionlink')[0].href")
+    async function getid() {
+        let result = await view.webContents.executeJavaScript("document.getElementsByClassName('ytp-title-link yt-uix-sessionlink')[0].href")
         return result.split("=").pop().trim();
     }
 
-    function getimg() {
-        let result = view.webContents.executeJavaScript("document.getElementsByClassName('image style-scope ytmusic-player-bar')[0].src;")
+    async function getimg() {
+        let result = await view.webContents.executeJavaScript("document.getElementsByClassName('image style-scope ytmusic-player-bar')[0].src;")
         if (!result) return undefined
         return result.split('=')[0].trim() + "=w250";
-
     }
 
     async function updatesonginfo() {
         //i should change to promise.all even if the benefit is small
-        songinfo.title = await gettitle()
-        songinfo.artist = await getartist()
+
+        let temptitle = await gettitle()
+        let tempartist = await getartist()
+        const [ artist, title ] = getArtistTitle(temptitle, {
+            defaultArtist: tempartist,
+            defaultTitle: temptitle
+        })
+        songinfo.title = title
+        songinfo.artist = artist
         songinfo.link = await getid()
         songinfo.img = await getimg()
         songinfo.time = await gettime()
@@ -287,9 +299,7 @@ function createWindow() {
         songinfo.percent = ((songinfo.time * 100) / songinfo.timefinish)
         //await songinfo.isplaying = tbd
         //overlaysyncer()
-
     }
-
 
 
     async function pushsong() {
