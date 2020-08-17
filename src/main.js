@@ -21,7 +21,7 @@ const grayicon = path.join(__dirname, 'assets/icons/256x256mono.png');
 autoUpdater.checkForUpdatesAndNotify()
 
 //fuck me what is this dogshit
-let tray, notificationWindow, mainWindow, loadingWindow, view, percentimage, discordrichupdater;
+let tray, notificationWindow, mainWindow, loadingWindow, view, discordrichupdater;
 
 //also use this ffs (objects)
 let songinfo = {}
@@ -168,7 +168,7 @@ function createWindow() {
     })
 
     client.on('spectate', (secret) => {
-        if (secret.length === 11 && isBase64(secret, {urlSafe: true}))
+        if (secret.length === 11 && validator.isBase64(secret, {urlSafe: true}))
             view.webContents.loadURL('https://music.youtube.com/watch?v=' + secret);
     });
     client.on('connected', (user) => {
@@ -209,21 +209,23 @@ function createWindow() {
     async function discordrichpresencesyncer() {
         await updatesonginfo()
 
-
-        songpercent = ((songinfo.time * 100) / songinfo.timefinish)
-        if (songpercent < 10)
-            percentimage = "10"
-        else if (songpercent < 30)
-            percentimage = "30"
-        else if (songpercent < 70)
-            percentimage = "70"
-        else if (songpercent < 90)
-            percentimage = "90"
+        //seems like this is the fastest one https://stackoverflow.com/questions/6665997/switch-statement-for-greater-than-less-than#6666246
+        let percent = songinfo.percent
+        let image
+        if (percent < 10)
+            image = "10"
+        else if (percent < 30)
+            image = "30"
+        else if (percent < 70)
+            image = "70"
+        else if (percent < 90) {
+            image = "90"
+        }
 
         client.updatePresence({
             state: `Author: ${songinfo.artist}`,
             details: `Title: ${songinfo.title}`,
-            largeImageKey: percentimage,
+            largeImageKey: image,
             smallImageKey: 'playing',
             instance: true,
             spectateSecret: songinfo.link,
@@ -238,57 +240,47 @@ function createWindow() {
     }
 
     function gettime() {
-        return view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuenow');")
-            .then((result) => {
-                return result.trim();
-            });
+        let result = view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuenow');")
+        return result.trim();
+
     }
 
     function getfinishtime() {
-        return view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuemax');")
-            .then((result) => {
-                return result.trim();
-            });
+        let result = view.webContents.executeJavaScript("document.getElementById('progress-bar').getAttribute('aria-valuemax');")
+        return result.trim();
     }
 
     function gettitle() {
-        return view.webContents.executeJavaScript("document.getElementsByClassName('title ytmusic-player-bar')[0].innerText")
-            .then((result) => {
-                return result.trim();
-            });
+        let result = view.webContents.executeJavaScript("document.getElementsByClassName('title ytmusic-player-bar')[0].innerText")
+        return result.trim()
     }
 
     function getartist() {
-        return view.webContents.executeJavaScript(
+        let result = view.webContents.executeJavaScript(
             `var bar = document.getElementsByClassName('subtitle ytmusic-player-bar')[0];
                    var title = bar.getElementsByClassName('yt-simple-endpoint yt-formatted-string');
                    if( !title.length ) { title = bar.getElementsByClassName('byline ytmusic-player-bar') }
                    title[0].innerText`)
-            .then((result) => {
-                return result.trim();
-            });
+        return result.trim();
     }
 
-    function getlink() {
-        return view.webContents.executeJavaScript("document.getElementsByClassName('ytp-title-link yt-uix-sessionlink')[0].href")
-            .then((result) => {
-                return result.split("=").pop().trim();
-            });
+    function getid() {
+        let result =  view.webContents.executeJavaScript("document.getElementsByClassName('ytp-title-link yt-uix-sessionlink')[0].href")
+        return result.split("=").pop().trim();
     }
 
     function getimg() {
-        return view.webContents.executeJavaScript("document.getElementsByClassName('image style-scope ytmusic-player-bar')[0].src;")
-            .then((result) => {
-                if (!result) return undefined
-                var sanitizedresult = result.split('=')[0].trim() + "=w250";
-                return sanitizedresult;
-            });
+        let result = view.webContents.executeJavaScript("document.getElementsByClassName('image style-scope ytmusic-player-bar')[0].src;")
+        if (!result) return undefined
+        return result.split('=')[0].trim() + "=w250";
+
     }
 
     async function updatesonginfo() {
+        //i should change to promise.all even if the benefit is small
         songinfo.title = await gettitle()
         songinfo.artist = await getartist()
-        songinfo.link = await getlink()
+        songinfo.link = await getid()
         songinfo.img = await getimg()
         songinfo.time = await gettime()
         songinfo.timefinish = await getfinishtime()

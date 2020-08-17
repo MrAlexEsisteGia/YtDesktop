@@ -121,7 +121,8 @@
 
 
 <script>
-    const {ipcRenderer, remote} = require('electron')
+    const {ipcRenderer} = require('electron')
+    const remote = require('electron').remote
 
     function changesong(text1, text2, image) {
         if (image) {
