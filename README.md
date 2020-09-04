@@ -4,7 +4,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/l13q29nr44xc1xow/branch/master?svg=true&?style=flat-square)](https://ci.appveyor.com/project/MrAlexEsisteGia/ytdesktop/branch/master)
 [![GitHub All Releases](https://img.shields.io/github/downloads/MrAlexEsisteGia/YtDesktop/total?style=flat-square)](https://github.com/MrAlexEsisteGia/YtDesktop/releases)
 [![Discord](https://img.shields.io/discord/715732365288144959?color=blueviolet&label=Discord&logo=discord&style=flat-square)](https://discord.gg/sceQKWp)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMrAlexEsisteGia%2FYtDesktop.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FMrAlexEsisteGia%2FYtDesktop?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FMrAlexEsisteGia%2FYtDesktop.svg?style=flat-square)](https://app.fossa.com/projects/git%2Bgithub.com%2FMrAlexEsisteGia%2FYtDesktop?ref=badge_shield)
 
 [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/does-not-contain-treenuts.svg)](https://forthebadge.com)
