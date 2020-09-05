@@ -134,7 +134,7 @@ function createWindow() {
         }
     });
     notificationWindow.setIgnoreMouseEvents(true);
-    notificationWindow.webContents.openDevTools()
+    //notificationWindow.webContents.openDevTools()
     notificationWindow.setMenuBarVisibility(false);
     notificationWindow.loadFile('./src/assets/notifications/notifications.html');
 
