@@ -15,11 +15,11 @@
             height: 100%;
             overflow: hidden;
             user-select: none;
-            background: #000000;
+            color: #0009ff;
         }
 
         .drag {
-            -webkit-app-region: drag;
+            -webkit-app-region:drag;
         }
 
         .no-drag {
@@ -40,25 +40,29 @@
             width: 100%;
         }
 
+        .title {
+            float: left;
+            margin: -4px 0 0 4px;
+            color: #FFF;
+        }
 
         .cmd-btns {
             float: right;
             color: white;
-            height: 100%;
         }
 
         .cmd-btn {
             float: left;
-            height: 100%;
-            width: 20px;
+            width: 25px;
+            height: 100% !important;
             /*margin: -2px 0 0 0;*/
-            /* padding: 0px 0; */
+            padding: 0px 0;
             text-align: center;
             font-size: 100% !important;
         }
 
         .cmd-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba( 255, 255, 255, 0.1 );
         }
 
         .hide {
@@ -72,41 +76,40 @@
 
     </style>
 
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
 
 </head>
 
 <body>
 
-<div class="bar drag" id="nice-titlebar">
-    <div class="cmd-btns no-drag">
-        <div class="pointer cmd-btn green-text hide" id="btn-update">
-            <img src="assets/icons/error.svg" title="Update" alt="">
+<div id="nice-titlebar" class="bar drag">
+    <div class="cmd-btns">
+        <div class="no-drag pointer cmd-btn green-text hide" id="btn-update">
+            <i class="material-icons cmd-btn" title="New Update">sync</i>
         </div>
-        <div class="pointer cmd-btn hover-red" id="btn-download">
-            <img src="assets/icons/download.svg" title="Download" alt="">
+        <div class="no-drag pointer cmd-btn hide" id="btn-show-companion">
+            <i class="material-icons cmd-btn" title="Show Companion">surround_sound</i>
         </div>
-        <div class="pointer cmd-btn" id="discord">
-            <img src="assets/icons/error.svg" title="Discord" alt="">
+        <div class="no-drag pointer cmd-btn" id="btn-show-settings">
+            <i class="material-icons cmd-btn" title="Show Setting">settings</i>
         </div>
-        <div class="pointer cmd-btn" id="settings">
-            <img src="assets/icons/menu.svg" title="Menu" alt="">
+        <div class="no-drag pointer cmd-btn" id="btn-minimize">
+            <i class="material-icons cmd-btn" title="Minimize">remove</i>
         </div>
-        <div class="pointer cmd-btn" id="btn-minimize">
-            <img src="assets/icons/minimize.svg" title="Minimize" alt="">
+        <div class="no-drag pointer cmd-btn" id="btn-maximize">
+            <i class="material-icons cmd-btn" title="Maximize">crop_square</i>
         </div>
-        <div class="pointer cmd-btn" id="btn-maximize">
-            <img src="assets/icons/maximize.svg" title="Maximize" alt="">
-        </div>
-        <div class="pointer cmd-btn hover-red" id="btn-close">
-            <img src="assets/icons/close.svg" title="Close" alt="">
+        <div class="no-drag pointer cmd-btn hover-red" id="btn-close">
+            <i class="material-icons cmd-btn" title="Close">close</i>
         </div>
     </div>
 </div>
 
 
+
 <script>
-    const {ipcRenderer} = require('electron')
+    const { ipcRenderer } = require('electron')
     const remote = require('electron').remote
 
     document.getElementById("btn-close").addEventListener("click", function (e) {
@@ -124,16 +127,8 @@
         window.isMaximized() ? window.unmaximize() : window.maximize();
     });
 
-    document.getElementById("settings").addEventListener("click", function (e) {
-        ipcRenderer.send('settings')
-    });
-
-    document.getElementById("discord").addEventListener("click", function (e) {
+    document.getElementById("btn-show-settings").addEventListener("click", function (e) {
         ipcRenderer.send('senddiscord')
-    });
-
-    document.getElementById("btn-download").addEventListener("click", function (e) {
-        ipcRenderer.send('download')
     });
 
 </script>

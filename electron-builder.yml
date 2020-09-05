@@ -1,23 +1,17 @@
-"appId": "com.mralexesistegia.ytdesktop",
-             "directories": {
-                 "output": "BuildOutput"
-             },
-"appx": {
-    "identityName": "29668MrAlex.YtDesktop",
-    "publisher": "CN=C0082EE7-2DA8-4A88-9BAC-2CC8821BBE50",
-    "publisherDisplayName": "MrAlexEsisteGia",
-    "applicationId": "YtDesktop",
-    "displayName": "YtDesktop"
-},
-"win": {
-    "icon": "icon.png",
-    "publisherName": "MrAlexEsisteGia",
-    "target": [
-    {
-        "target": "nsis",
-        "arch": [
-            "x64"
-        ]
-    }
-    ]
-}
+---
+appId: com.mralexesistegia.ytdesktop
+directories:
+    output: BuildOutput
+appx:
+    identityName: 29668MrAlex.YtDesktop
+    publisher: CN=C0082EE7-2DA8-4A88-9BAC-2CC8821BBE50
+    publisherDisplayName: MrAlexEsisteGia
+    applicationId: YtDesktop
+    displayName: YtDesktop
+win:
+    icon: src/assets/icons/512x512.png
+    publisherName: MrAlexEsisteGia
+    target:
+        - target: nsis
+          arch:
+              - x64

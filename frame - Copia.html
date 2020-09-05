@@ -15,7 +15,7 @@
             height: 100%;
             overflow: hidden;
             user-select: none;
-            background: #000000;
+            color: #0009ff;
         }
 
         .drag {
@@ -40,19 +40,17 @@
             width: 100%;
         }
 
-
         .cmd-btns {
             float: right;
             color: white;
-            height: 100%;
         }
 
         .cmd-btn {
             float: left;
-            height: 100%;
-            width: 20px;
+            width: 25px;
+            height: 100% !important;
             /*margin: -2px 0 0 0;*/
-            /* padding: 0px 0; */
+            padding: 0px 0;
             text-align: center;
             font-size: 100% !important;
         }
@@ -72,7 +70,10 @@
 
     </style>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
 
+    <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
 
 </head>
 
@@ -81,25 +82,25 @@
 <div class="bar drag" id="nice-titlebar">
     <div class="cmd-btns no-drag">
         <div class="pointer cmd-btn green-text hide" id="btn-update">
-            <img src="assets/icons/error.svg" title="Update" alt="">
+            <i class="material-icons cmd-btn" title="New Update">sync</i>
         </div>
-        <div class="pointer cmd-btn hover-red" id="btn-download">
-            <img src="assets/icons/download.svg" title="Download" alt="">
+        <div class="pointer cmd-btn hide" id="btn-show-companion">
+            <i class="material-icons cmd-btn" title="Show Companion">surround_sound</i>
         </div>
         <div class="pointer cmd-btn" id="discord">
-            <img src="assets/icons/error.svg" title="Discord" alt="">
+            <i class="iconify cmd-btn" data-icon="mdi:discord" data-inline="false" title="Discord bot"></i>
         </div>
         <div class="pointer cmd-btn" id="settings">
-            <img src="assets/icons/menu.svg" title="Menu" alt="">
+            <i class="material-icons cmd-btn" title="Show Setting"></i>
         </div>
         <div class="pointer cmd-btn" id="btn-minimize">
-            <img src="assets/icons/minimize.svg" title="Minimize" alt="">
+            <i class="material-icons cmd-btn" title="Minimize">remove</i>
         </div>
         <div class="pointer cmd-btn" id="btn-maximize">
-            <img src="assets/icons/maximize.svg" title="Maximize" alt="">
+            <i class="material-icons cmd-btn" title="Maximize">crop_square</i>
         </div>
         <div class="pointer cmd-btn hover-red" id="btn-close">
-            <img src="assets/icons/close.svg" title="Close" alt="">
+            <i class="material-icons cmd-btn" title="Close">close</i>
         </div>
     </div>
 </div>
@@ -125,16 +126,9 @@
     });
 
     document.getElementById("settings").addEventListener("click", function (e) {
-        ipcRenderer.send('settings')
-    });
-
-    document.getElementById("discord").addEventListener("click", function (e) {
         ipcRenderer.send('senddiscord')
     });
 
-    document.getElementById("btn-download").addEventListener("click", function (e) {
-        ipcRenderer.send('download')
-    });
 
 </script>
 

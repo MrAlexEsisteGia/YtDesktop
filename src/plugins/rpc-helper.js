@@ -1,5 +1,7 @@
 //originally made by https://www.npmjs.com/~snek
-/*jshint esversion: 6 */
+//modified by @MrAlexEsisteGia
+
+/*jshint esversion: 8 */
 'use strict';
 const Discord = require('discord-rpc');
 const EventEmitter = require('events');
@@ -55,6 +57,7 @@ function makeClient(clientId) {
 
 
             rpc.subscribe('ACTIVITY_JOIN', ({secret}) => {
+                console.log(secret)
                 instance.emit('join', secret);
             });
             rpc.subscribe('ACTIVITY_SPECTATE', ({secret}) => {
