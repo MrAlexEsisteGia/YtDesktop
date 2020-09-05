@@ -9,7 +9,6 @@ const {
     globalShortcut
 } = require('electron');
 const {autoUpdater} = require("electron-updater")
-
 const path = require('path');
 //const URL = require('url').URL
 const settings = require('electron-settings')
@@ -26,7 +25,7 @@ autoUpdater.checkForUpdatesAndNotify()
 let tray, notificationWindow, mainWindow, loadingWindow, view, discordrichupdater;
 
 //also use this ffs (objects)
-var songinfo = {}
+let songinfo = {}
 let discordinfo = {}
 
 app.on('ready', createWindow); // create main window
@@ -169,6 +168,7 @@ function createWindow() {
     })
 
     ipcMain.handle('getmusicinfo', async (event, ...args) => {
+        await updatesonginfo()
         return songinfo
     })
 
@@ -302,7 +302,7 @@ function createWindow() {
         songinfo.time = await gettime()
         songinfo.timefinish = await getfinishtime()
         songinfo.percent = ((songinfo.time * 100) / songinfo.timefinish)
-        console.log(songinfo)
+        //console.log(songinfo)
         //await songinfo.isplaying = tbd
         //overlaysyncer()
     }

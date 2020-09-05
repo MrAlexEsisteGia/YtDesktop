@@ -126,11 +126,6 @@
     const {ipcRenderer, remote} = require('electron')
 
     async function changesong() {
-        const songinfo = await ipcRenderer.invoke('getmusicinfo')
-        document.getElementById("songimg").src = songinfo.img;
-        document.getElementById("currentsong").innerHTML = songinfo.title;
-        document.getElementById("currentartist").innerHTML = songinfo.artist;
-
         showmenu()
         setTimeout(hidemenu, 2400)
     }
@@ -142,12 +137,11 @@
     }
 
     function showmenu() {
-        document.getElementById("songbar").style.width = remote.getGlobal("songinfo.percent") + "%";
+        updateoverlay()
         document.getElementById("songbrowser").style.opacity = '1';
     }
 
     function hidemenu() {
-        document.getElementById("songbar").style.width = remote.getGlobal("songinfo.percent") + "%";
         document.getElementById("songbrowser").style.opacity = '0';
     }
 
@@ -160,8 +154,13 @@
         document.getElementById("timebar").style.width = '1%';
     }
 
-    function updateoverlay() {
-        document.getElementById("songbar").style.width = remote.getGlobal("songinfo.percent") + "%";
+    async function updateoverlay() {
+        const songinfo = await ipcRenderer.invoke('getmusicinfo');
+        document.getElementById("songimg").src = songinfo.img;
+        document.getElementById("currentsong").innerHTML = songinfo.title;
+        document.getElementById("currentartist").innerHTML = songinfo.artist;
+        document.getElementById("songbar").style.width = songinfo.percent + "%";
+        console.log(songinfo)
     }
 
 </script>

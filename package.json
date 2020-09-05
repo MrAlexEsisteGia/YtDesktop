@@ -13,10 +13,10 @@
     "Music"
   ],
   "author": "MrAlexEsisteGia",
-  "license": "GPL-3.0-only",
+  "license": "GPL-3.0",
   "devDependencies": {
     "@material/top-app-bar": "^7.0.0",
-    "electron": "^9.1.2",
+    "electron": "^9.3.0",
     "electron-builder": "^21.2.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
